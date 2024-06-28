@@ -1,0 +1,3 @@
+set(LIB_QT_LDAP_INCLUDE_DIR
+  ${CMAKE_SOURCE_DIR}/include
+)
