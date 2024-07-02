@@ -54,6 +54,9 @@ LDAPTreeModel::LDAPTreeModel(QObject *parent)
     , d_ptr(new LDAPTreeModelPrivate(this))
 {
     Q_D(LDAPTreeModel);
+
+    Q_UNUSED(d);
+
     beginResetModel();
     // TODO: Implement.
     endResetModel();
@@ -152,6 +155,9 @@ QVariant LDAPTreeModel::data(const QModelIndex &index, int role) const
     }
 
     LDAPTreeItem* item = static_cast<LDAPTreeItem*>(index.internalPointer());
+
+    Q_UNUSED(item);
+
     if(role == Qt::DisplayRole)
     {
         // TODO: Implement.
