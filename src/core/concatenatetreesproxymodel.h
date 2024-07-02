@@ -21,7 +21,9 @@
 #ifndef QT_LDAP_CORE_CONCATENATE_TREES_PROXY_MODEL_H
 #define QT_LDAP_CORE_CONCATENATE_TREES_PROXY_MODEL_H
 
+#include <QAbstractItemModel>
 #include <QIdentityProxyModel>
+#include <QSharedPointer>
 
 namespace qtldap_core
 {
@@ -37,27 +39,47 @@ public:
     explicit ConcatenateTreesProxyModel(QObject* parent = nullptr);
     ~ConcatenateTreesProxyModel();
 
-    QModelIndex index(int row, int column,
-                      const QModelIndex &parent = QModelIndex()) const override;
+    void addSourceModel(const QSharedPointer<QAbstractItemModel> &sourceModel);
 
-    QModelIndex parent(const QModelIndex &index) const override;
+    void removeSourceModel(const QSharedPointer<QAbstractItemModel> &sourceModel);
 
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    QList<QSharedPointer<QAbstractItemModel> > sourceModels() const;
+
+    QModelIndex mapFromSource(const QModelIndex &sourceIndex) const override;
+
+    QModelIndex mapToSource(const QModelIndex &proxyIndex) const override;
+
+    bool canDropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column,
+                         const QModelIndex &parent) const override;
 
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
-    bool setData(const QModelIndex &index, const QVariant &value,
-                 int role = Qt::EditRole) override;
+    bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column,
+                      const QModelIndex &parent) override;
 
     Qt::ItemFlags flags(const QModelIndex& index) const override;
 
-    bool canFetchMore(const QModelIndex &parent) const override;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
-    void fetchMore(const QModelIndex& parent) override;
+    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
 
-    bool hasChildren(const QModelIndex &parent) const override;
+    QMap<int, QVariant> itemData(const QModelIndex &proxyIndex) const override;
+
+    QMimeData *mimeData(const QModelIndexList &indexes) const override;
+
+    QStringList mimeTypes() const override;
+
+    QModelIndex parent(const QModelIndex &index) const override;
+
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
+
+    bool setItemData(const QModelIndex &proxyIndex, const QMap<int, QVariant> &roles) override;
+
+    QSize span(const QModelIndex &index) const override;
 
 private:
     ConcatenateTreesProxyModelPrivate *d_ptr;
