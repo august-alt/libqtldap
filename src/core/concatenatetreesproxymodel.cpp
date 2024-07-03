@@ -153,12 +153,14 @@ int ConcatenateTreesProxyModel::columnCount(const QModelIndex &parent) const
 */
 QVariant ConcatenateTreesProxyModel::data(const QModelIndex &index, int role) const
 {
-    Q_UNUSED(index);
-    Q_UNUSED(role);
+    const QModelIndex sourceIndex = mapToSource(index);
+    Q_ASSERT(checkIndex(index, CheckIndexOption::IndexIsValid));
+    if (!sourceIndex.isValid())
+    {
+        return QVariant();
+    }
 
-    // TODO: Implement.
-
-    return QVariant();
+    return sourceIndex.data(role);
 }
 
 /*!
