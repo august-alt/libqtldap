@@ -135,9 +135,17 @@ ConcatenateTreesProxyModel::~ConcatenateTreesProxyModel()
 */
 void ConcatenateTreesProxyModel::addSourceModel(const QSharedPointer<QAbstractItemModel> &sourceModel)
 {
-    Q_UNUSED(sourceModel);
+    Q_D(ConcatenateTreesProxyModel);
 
-    // TODO: Implement.
+    if (!d->models.contains(sourceModel))
+    {
+        d->appendModel(sourceModel);
+    }
+    else
+    {
+        qWarning("ConcatenateTreesProxyModel: Attempt to add a source model that already exists in the proxy model.");
+        Q_ASSERT(!"ConcatenateTreesProxyModel: Attempt to add a source model that already exists in the proxy model.");
+    }
 }
 
 /*!
