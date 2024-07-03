@@ -177,9 +177,21 @@ QList<QSharedPointer<QAbstractItemModel> > ConcatenateTreesProxyModel::sourceMod
 */
 QModelIndex ConcatenateTreesProxyModel::mapFromSource(const QModelIndex &sourceIndex) const
 {
-    Q_UNUSED(sourceIndex);
+    Q_D(const ConcatenateTreesProxyModel);
+    if (!sourceIndex.isValid())
+    {
+        return QModelIndex();
+    }
 
-    // TODO: Implement.
+    const QSharedPointer<QAbstractItemModel> sourceModel
+            = QSharedPointer<QAbstractItemModel>(const_cast<QAbstractItemModel*>(sourceIndex.model()));
+    if (!d->models.contains(sourceModel))
+    {
+        qWarning("ConcatenateTreesProxyModel: Index from wrong model passed to mapFromSource.");
+        Q_ASSERT(!"ConcatenateTreesProxyModel: Index from wrong model passed to mapFromSource.");
+        return QModelIndex();
+    }
+    // TODO: Implement actual mapping.
 
     return QModelIndex();
 }
