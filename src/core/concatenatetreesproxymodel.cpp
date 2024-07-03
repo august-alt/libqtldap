@@ -167,9 +167,9 @@ void ConcatenateTreesProxyModel::removeSourceModel(const QSharedPointer<QAbstrac
 */
 QList<QSharedPointer<QAbstractItemModel> > ConcatenateTreesProxyModel::sourceModels() const
 {
-    // TODO: Implement.
+    Q_D(const ConcatenateTreesProxyModel);
 
-    return QList<QSharedPointer<QAbstractItemModel> >();
+    return d->models;
 }
 
 /*!
