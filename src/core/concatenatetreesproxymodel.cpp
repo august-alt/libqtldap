@@ -185,11 +185,20 @@ bool ConcatenateTreesProxyModel::dropMimeData(const QMimeData *data, Qt::DropAct
 */
 Qt::ItemFlags ConcatenateTreesProxyModel::flags(const QModelIndex &index) const
 {
-    Q_UNUSED(index);
+    Q_D(const ConcatenateTreesProxyModel);
+    if (d->models.isEmpty())
+    {
+        return Qt::NoItemFlags;
+    }
 
-    // TODO: Implement.
+    Q_ASSERT(checkIndex(index, CheckIndexOption::IndexIsValid));
+    const QModelIndex sourceIndex = mapToSource(index);
+    if (!sourceIndex.isValid())
+    {
+        return Qt::NoItemFlags;
+    }
 
-    return Qt::NoItemFlags;
+    return sourceIndex.flags();
 }
 
 /*!
