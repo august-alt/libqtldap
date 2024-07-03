@@ -153,9 +153,13 @@ void ConcatenateTreesProxyModel::addSourceModel(const QSharedPointer<QAbstractIt
 */
 void ConcatenateTreesProxyModel::removeSourceModel(const QSharedPointer<QAbstractItemModel> &sourceModel)
 {
-    Q_UNUSED(sourceModel);
+    Q_D(ConcatenateTreesProxyModel);
 
-    // TODO: Implement.
+    if (!d->models.removeOne(sourceModel))
+    {
+        qWarning("ConcatenateTreesProxyModel: Unable to remove specified model; removeSourceModel failed.");
+        Q_ASSERT(!"ConcatenateTreesProxyModel: Unable to remove specified model; removeSourceModel failed.");
+    }
 }
 
 /*!
