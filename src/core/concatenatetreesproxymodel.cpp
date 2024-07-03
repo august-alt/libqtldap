@@ -20,10 +20,37 @@
 
 #include "concatenatetreesproxymodel.h"
 
+#include <QDebug>
 #include <QSize>
+#include <QUuid>
 
 namespace qtldap_core
 {
+
+struct TreeNode
+{
+    QUuid id;
+
+    QAbstractItemModel* sourceModel;
+
+    int row;
+    int column;
+
+
+    TreeNode()
+        : id()
+        , sourceModel(nullptr)
+        , row(0)
+        , column(0)
+    {}
+
+    TreeNode(QUuid id, QAbstractItemModel* sourceModel, int row, int column)
+        : id(id)
+        , sourceModel(sourceModel)
+        , row(row)
+        , column(column)
+    {}
+};
 
 class ConcatenateTreesProxyModelPrivate
 {
@@ -36,9 +63,45 @@ public:
 
     ~ConcatenateTreesProxyModelPrivate() {}
 
+    TreeNode findSourceModelForRowColumn(int row, int column) const;
+
+    bool appendModel(const QSharedPointer<QAbstractItemModel>& model);
+    bool removeModel(const QSharedPointer<QAbstractItemModel>& model);
+
+public:
+    QList<QSharedPointer<QAbstractItemModel> > models;
+
 private:
     ConcatenateTreesProxyModel *q_ptr;
+
+    TreeNode rootNode;
 };
+
+TreeNode ConcatenateTreesProxyModelPrivate::findSourceModelForRowColumn(int row, int column) const
+{
+    Q_UNUSED(row);
+    Q_UNUSED(column);
+
+    // TODO: Implement.
+
+    return TreeNode();
+}
+
+bool ConcatenateTreesProxyModelPrivate::appendModel(const QSharedPointer<QAbstractItemModel> &model)
+{
+    models.append(model);
+
+    // TODO: Implement internal tree building node appending.
+
+    return true;
+}
+
+bool ConcatenateTreesProxyModelPrivate::removeModel(const QSharedPointer<QAbstractItemModel> &model)
+{
+    // TODO: Implement tree cleaning.
+
+    return models.removeOne(model);
+}
 
 /*!
     \class ConcatenateTreesProxyModel
@@ -114,11 +177,29 @@ QModelIndex ConcatenateTreesProxyModel::mapFromSource(const QModelIndex &sourceI
 */
 QModelIndex ConcatenateTreesProxyModel::mapToSource(const QModelIndex &proxyIndex) const
 {
-    Q_UNUSED(proxyIndex);
+    Q_D(const ConcatenateTreesProxyModel);
+    if (!proxyIndex.isValid())
+    {
+        return QModelIndex();
+    }
 
-    // TODO: Implement.
+    const QAbstractItemModel *proxyModel = proxyIndex.model();
+    if (proxyModel != this)
+    {
+        qWarning("ConcatenateTreesProxyModel: Index from wrong model passed to mapToSource.");
+        Q_ASSERT(!"ConcatenateTreesProxyModel: Index from wrong model passed to mapToSource.");
+        return QModelIndex();
+    }
+    int row = proxyIndex.row();
+    int column = proxyIndex.column();
 
-    return QModelIndex();
+    TreeNode sourceIndex = d->findSourceModelForRowColumn(row, column);
+    if (!sourceIndex.sourceModel)
+    {
+        return QModelIndex();
+    }
+
+    return sourceIndex.sourceModel->index(sourceIndex.row, sourceIndex.column);
 }
 
 /*!
