@@ -339,11 +339,14 @@ QModelIndex ConcatenateTreesProxyModel::index(int row, int column, const QModelI
 */
 QMap<int, QVariant> ConcatenateTreesProxyModel::itemData(const QModelIndex &proxyIndex) const
 {
-    Q_UNUSED(proxyIndex);
+    Q_ASSERT(checkIndex(proxyIndex, CheckIndexOption::IndexIsValid));
+    const QModelIndex sourceIndex = mapToSource(proxyIndex);
+    if (!sourceIndex.isValid())
+    {
+        return {};
+    }
 
-    // TODO: Implement.
-
-    return {};
+    return sourceIndex.model()->itemData(sourceIndex);
 }
 
 /*!
