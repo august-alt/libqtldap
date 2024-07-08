@@ -196,8 +196,7 @@ bool LDAPTreeModel::canFetchMore(const QModelIndex &parent) const
     LDAPTreeItem* parentItem = static_cast<LDAPTreeItem*>(parent.internalPointer());
     if (parentItem)
     {
-        // TODO: Implement.
-        return false;
+        return parentItem->canFetchMore();
     }
 
     return false;
@@ -208,8 +207,7 @@ void LDAPTreeModel::fetchMore(const QModelIndex &parent)
     LDAPTreeItem* parentItem = static_cast<LDAPTreeItem*>(parent.internalPointer());
     if (parentItem)
     {
-        // TODO: Implement.
-        //parentItem->load();
+        parentItem->fetchMore();
     }
 }
 

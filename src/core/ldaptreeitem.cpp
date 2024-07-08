@@ -43,4 +43,16 @@ QVector<LDAPTreeItem *> &LDAPTreeItem::getChildren()
     return children;
 }
 
+bool LDAPTreeItem::canFetchMore() const
+{
+    // TODO: Implement.
+
+    return false;
+}
+
+void LDAPTreeItem::fetchMore()
+{
+    // TODO: Implement.
+}
+
 }

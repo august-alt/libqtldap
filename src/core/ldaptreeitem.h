@@ -36,6 +36,9 @@ public:
     LDAPTreeItem *getParent() const;
     QVector<LDAPTreeItem*> &getChildren();
 
+    bool canFetchMore() const;
+    void fetchMore();
+
 private:
     QVector<LDAPTreeItem*> children;
     LDAPTreeItem* parent;
