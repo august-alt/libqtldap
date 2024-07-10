@@ -49,6 +49,18 @@ private:
     LDAPTreeModel *q_ptr;
 };
 
+/*!
+    \class LDAPTreeModel
+    \inmodule QtLdap
+    \brief The LDAPTreeModel class contains list of LDAP entities.
+    \ingroup model-view
+    TODO: Write documentation for model
+    \sa QAbstractItemModel, {Model/View Programming}
+ */
+
+/*!
+    Constructs a ldap tree model with the given \a parent.
+*/
 LDAPTreeModel::LDAPTreeModel(QObject *parent)
     : QAbstractItemModel(parent)
     , d_ptr(new LDAPTreeModelPrivate(this))
@@ -62,11 +74,17 @@ LDAPTreeModel::LDAPTreeModel(QObject *parent)
     endResetModel();
 }
 
+/*!
+    Destroys this model.
+*/
 LDAPTreeModel::~LDAPTreeModel()
 {
     delete d_ptr;
 }
 
+/*!
+  \reimp
+*/
 QModelIndex LDAPTreeModel::index(int row, int column, const QModelIndex &parent) const
 {
     Q_D(const LDAPTreeModel);
@@ -90,6 +108,9 @@ QModelIndex LDAPTreeModel::index(int row, int column, const QModelIndex &parent)
     return QModelIndex();
 }
 
+/*!
+  \reimp
+*/
 QModelIndex LDAPTreeModel::parent(const QModelIndex &index) const
 {
     Q_D(const LDAPTreeModel);
@@ -120,6 +141,9 @@ QModelIndex LDAPTreeModel::parent(const QModelIndex &index) const
     return createIndex(items.indexOf(parentItem), 0, parentItem);
 }
 
+/*!
+  \reimp
+*/
 int LDAPTreeModel::rowCount(const QModelIndex &parent) const
 {
     if (!parent.isValid())
@@ -136,12 +160,18 @@ int LDAPTreeModel::rowCount(const QModelIndex &parent) const
     return 0;
 }
 
+/*!
+  \reimp
+*/
 int LDAPTreeModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
     return 1;
 }
 
+/*!
+  \reimp
+*/
 QVariant LDAPTreeModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid())
@@ -167,6 +197,9 @@ QVariant LDAPTreeModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
+/*!
+  \reimp
+*/
 bool LDAPTreeModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     Q_UNUSED(index);
@@ -176,6 +209,9 @@ bool LDAPTreeModel::setData(const QModelIndex &index, const QVariant &value, int
     return false;
 }
 
+/*!
+  \reimp
+*/
 Qt::ItemFlags LDAPTreeModel::flags(const QModelIndex &index) const
 {
     if (!index.isValid())
@@ -186,6 +222,9 @@ Qt::ItemFlags LDAPTreeModel::flags(const QModelIndex &index) const
      return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
 }
 
+/*!
+  \reimp
+*/
 bool LDAPTreeModel::canFetchMore(const QModelIndex &parent) const
 {
     if (!parent.isValid())
@@ -202,6 +241,9 @@ bool LDAPTreeModel::canFetchMore(const QModelIndex &parent) const
     return false;
 }
 
+/*!
+  \reimp
+*/
 void LDAPTreeModel::fetchMore(const QModelIndex &parent)
 {
     LDAPTreeItem* parentItem = static_cast<LDAPTreeItem*>(parent.internalPointer());
@@ -211,6 +253,9 @@ void LDAPTreeModel::fetchMore(const QModelIndex &parent)
     }
 }
 
+/*!
+  \reimp
+*/
 bool LDAPTreeModel::hasChildren(const QModelIndex &parent) const
 {
     LDAPTreeItem* parentItem = static_cast<LDAPTreeItem*>(parent.internalPointer());
