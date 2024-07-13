@@ -11,12 +11,14 @@ set(LIBRARY_NAME
 
 set(HEADERS
     concatenatetreesproxymodel.h
+    ldapentity.h
     ldaptreeitem.h
     ldaptreemodel.h
 )
 
 set(SOURCES
     concatenatetreesproxymodel.cpp
+    ldapentity.cpp
     ldaptreeitem.cpp
     ldaptreemodel.cpp
 )
