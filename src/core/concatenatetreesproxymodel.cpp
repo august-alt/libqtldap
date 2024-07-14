@@ -23,12 +23,14 @@
 #include <QDebug>
 #include <QSize>
 #include <QUuid>
+#include <optional>
 
 namespace qtldap_core
 {
 
 struct TreeNode
 {
+
     QUuid id;
 
     QAbstractItemModel* sourceModel;
@@ -36,12 +38,16 @@ struct TreeNode
     int row;
     int column;
 
+    QMap<QUuid, TreeNode> children;
 
-    TreeNode()
+    bool isValid;
+
+    explicit TreeNode()
         : id()
         , sourceModel(nullptr)
         , row(0)
         , column(0)
+        , isValid(false)
     {}
 
     TreeNode(QUuid id, QAbstractItemModel* sourceModel, int row, int column)
@@ -49,7 +55,14 @@ struct TreeNode
         , sourceModel(sourceModel)
         , row(row)
         , column(column)
+        , isValid(true)
     {}
+
+    TreeNode(QUuid id, QAbstractItemModel* sourceModel, int row, int column, QMap<QUuid, TreeNode>& children)
+        : TreeNode(id, sourceModel, row, column)
+    {
+        this->children = children;
+    }
 };
 
 class ConcatenateTreesProxyModelPrivate
@@ -87,11 +100,78 @@ TreeNode ConcatenateTreesProxyModelPrivate::findSourceModelForRowColumn(int row,
     return TreeNode();
 }
 
+TreeNode mergeSameRoot(const TreeNode& tree1, const TreeNode& tree2)
+{
+    QMap<QUuid, TreeNode> children;
+    for (const auto& pair : tree2.children)
+    {
+        auto it = tree1.children.find(pair.id);
+        if (it != tree1.children.end())
+        {
+            children[pair.id] = mergeSameRoot(*it, pair);
+        }
+        else
+        {
+            children[pair.id] = pair;
+        }
+    }
+
+    return TreeNode(tree1.id, tree1.sourceModel, tree1.row, tree1.column, children);
+}
+
+TreeNode tryMergeIntoFirst(const TreeNode& tree1, const TreeNode& tree2)
+{
+     if (tree1.id == tree2.id)
+     {
+         return mergeSameRoot(tree1, tree2);
+     }
+     else if (tree1.children.empty())
+     {
+         return TreeNode();
+     }
+     else
+     {
+        for (const auto& pair : tree1.children)
+        {
+            return  tryMergeIntoFirst(pair, tree2);
+        }
+     }
+
+     return TreeNode();
+}
+
+TreeNode tryMergeEither(const TreeNode& tree1, const TreeNode& tree2)
+{
+    TreeNode result = tryMergeIntoFirst(tree1, tree2);
+    if (!result.isValid)
+    {
+        result = tryMergeIntoFirst(tree2, tree1);
+    }
+
+    return result;
+}
+
+TreeNode tryMergeOrCreateList(const TreeNode& tree1, const TreeNode& tree2)
+{
+    TreeNode result = tryMergeEither(tree1, tree2);
+    if (result.isValid)
+    {
+        return result;
+    }
+
+    result.children[tree1.id] = tree1;
+    result.children[tree2.id] = tree2;
+
+    result.isValid = true;
+
+    return result;
+}
+
 bool ConcatenateTreesProxyModelPrivate::appendModel(const QSharedPointer<QAbstractItemModel> &model)
 {
     models.append(model);
 
-    // TODO: Implement internal tree building node appending.
+    // TODO: tryMergeOrCreateList(rootNode, )
 
     return true;
 }
