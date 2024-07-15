@@ -171,9 +171,18 @@ bool ConcatenateTreesProxyModelPrivate::appendModel(const QSharedPointer<QAbstra
 {
     models.append(model);
 
-    // TODO: tryMergeOrCreateList(rootNode, )
+    TreeNode modelNode(QUuid(), model.get(), 0, 0);
 
-    return true;
+    auto result = tryMergeOrCreateList(rootNode, modelNode);
+
+    if (result.isValid)
+    {
+        rootNode = result;
+
+        return true;
+    }
+
+    return false;
 }
 
 bool ConcatenateTreesProxyModelPrivate::removeModel(const QSharedPointer<QAbstractItemModel> &model)
