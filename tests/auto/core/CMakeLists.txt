@@ -1,0 +1,4 @@
+add_subdirectory(concatenatetreesproxymodel)
+add_subdirectory(ldapentity)
+add_subdirectory(ldaptreeitem)
+add_subdirectory(ldaptreemodel)
