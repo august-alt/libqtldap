@@ -10,5 +10,37 @@ jobs:
     - name: Git Checkout
       uses: actions/checkout@v3
 
+    - name: Create clean documentation branch
+      run: git checkout -b documentation
+
+    - name: Perform update before install
+      run: sudo apt-get update
+
+    - name: Install qdoc and qt5base
+      run: sudo apt-get install qdoc-qt5 qtbase5-dev
+
     - name: Generating and publish autodocs
       run:  bash ./publish_api_docs.sh
+
+    - name: Add generated autodocs to Git repo in the documentation branch
+      run: |
+        git config --global user.email "github-bot@basealt.ru"
+        git config --global user.name  "$GITHUB_WORKFLOW GitHub action"
+        git add -f docs
+        git commit -am "docs: add auto-generated developer documentation"
+
+    - name: Publish autodocs as GitHub pages 
+      id:   push_documentation
+      run: |
+        git push -f origin documentation:documentation || :
+    - name: Always pass
+      run: | 
+        if [[ ${{ steps.push_documentation.outcome }} != 'success' ]]; then exit 0; fi
+
+    - name: Result URLs
+      run: |
+        REPO_OWNER=$(echo $GITHUB_REPOSITORY | cut -d '/' -f 1)
+        REPO_NAME=$(echo $GITHUB_REPOSITORY | cut -d '/' -f 2)
+        echo "Documentation on a github.io:  https://$REPO_OWNER.github.io/$REPO_NAME/docs"
+        echo ""
+        echo "Documentation branch: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/tree/documentation"
