@@ -2,7 +2,7 @@
 project = libqtldap
 
 ### Setting the paths to the source directory and source file extensions ###
-sourcedirs = ./src/core
+sourcedirs = ./src
 sources.fileextensions = "*.cpp"
 
 ### Setting output directory and format ###
