@@ -1,0 +1,17 @@
+### Project name ###
+project = libqtldap
+
+### Setting the paths to the source directory and source file extensions ###
+sourcedirs = ./src/core
+sources.fileextensions = "*.cpp"
+
+### Setting output directory and format ###
+outputdir = ./docs/
+outputformats = HTML
+
+### Setting HTML stylesheet, header, poster and footer ###
+HTML.stylesheets = style.css
+HTML.headerstyles = "<link rel=\"stylesheet\" type=\"text/css\" href=\"style/style.css\"/>\n"
+
+HTML.postheader = "<p class=\"header\"><small>[My awesome documentation]</small></p><hr/>"
+HTML.footer = "<hr/><p class=\"footer\"><small>[some footer and whatnot information]</small></p>"
