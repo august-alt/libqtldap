@@ -1,5 +1,5 @@
 find_package(QtLDAP COMPONENTS core REQUIRED)
-include_directories(${QTLDAP_INCLUDE_DIRS})
+include_directories(${LIB_QT_LDAP_INCLUDE_DIR})
 
 find_package(Qt5 COMPONENTS Core Test REQUIRED)
 set(QT_USE_QTTEST TRUE)
