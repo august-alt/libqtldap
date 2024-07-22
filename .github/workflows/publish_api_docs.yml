@@ -20,7 +20,7 @@ jobs:
       run: sudo apt-get install qdoc-qt5 qtbase5-dev
 
     - name: Generating and publish autodocs
-      run:  bash ./generate_api_docs.sh
+      run:  bash scripts/generate_api_docs.sh
 
     - name: Add generated autodocs to Git repo in the documentation branch
       run: |
