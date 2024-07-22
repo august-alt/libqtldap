@@ -38,21 +38,9 @@ LDAPTreeItem *LDAPTreeItem::getParent() const
     return parent;
 }
 
-QVector<LDAPTreeItem *> &LDAPTreeItem::getChildren()
+QVector<LDAPTreeItem *> LDAPTreeItem::getChildren() const
 {
     return children;
-}
-
-bool LDAPTreeItem::canFetchMore() const
-{
-    // TODO: Implement.
-
-    return false;
-}
-
-void LDAPTreeItem::fetchMore()
-{
-    // TODO: Implement.
 }
 
 }
