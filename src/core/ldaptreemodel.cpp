@@ -21,6 +21,10 @@
 #include "ldaptreemodel.h"
 #include "ldaptreeitem.h"
 
+/*!
+    \namespace qtldap_core public
+    \inmodule QtLdap
+*/
 namespace qtldap_core
 {
 
@@ -50,13 +54,12 @@ private:
 };
 
 /*!
-    \class LDAPTreeModel
+    \class qtldap_core::LDAPTreeModel public
     \inmodule QtLdap
     \brief The LDAPTreeModel class contains list of LDAP entities.
     \ingroup model-view
-    TODO: Write documentation for model
-    \sa QAbstractItemModel, {Model/View Programming}
- */
+    \note This documentation is not yet complete.
+*/
 
 /*!
     Constructs a ldap tree model with the given \a parent.

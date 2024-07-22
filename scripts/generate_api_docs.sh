@@ -8,4 +8,4 @@ export QT_VERSION_TAG=51513
 export QT_INSTALL_DOCS="/usr/share/doc/qt5/"
 
 ### Generate autodocs for libqtldap library ###
-qdoc config.qdocconf -I /usr/include/qt5 -I /usr/include/qt5/QtCore/
+qdoc config.qdocconf -I /usr/include/qt5 -I /usr/include/qt5/QtCore/ -I ./src/core -I ./doc

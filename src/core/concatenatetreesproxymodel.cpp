@@ -193,13 +193,12 @@ bool ConcatenateTreesProxyModelPrivate::removeModel(const QSharedPointer<QAbstra
 }
 
 /*!
-    \class ConcatenateTreesProxyModel
+    \class qtldap_core::ConcatenateTreesProxyModel public
     \inmodule QtLdap
-    \brief The ConcatenateTreesProxyModel class proxies multiple source tree models, concatenating their rows and columns
+    \brief The ConcatenateTreesProxyModel class proxies multiple source tree models, concatenating their rows and columns.
     \ingroup model-view
-    TODO: Write documentation for model
-    \sa QAbstractProxyModel, {Model/View Programming}, QIdentityProxyModel, QAbstractItemModel
- */
+    \note This documentation is not yet complete.
+*/
 
 /*!
     Constructs a concatenate-trees proxy model with the given \a parent.
