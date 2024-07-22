@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE QDOCINDEX>
+<INDEX url="" title="libqtldap Reference Documentation" version="" project="libqtldap">
+    <namespace name="" status="active" access="public" module="libqtldap">
+        <page name="index.html" href="index.html" status="active" location="index.qdoc" filepath="/home/runner/work/libqtldap/libqtldap/doc/index.qdoc" lineno="21" documented="true" subtype="page" title="Lib Qt LDAP" fulltitle="Lib Qt LDAP" subtitle="" module="libqtldap">
+            <contents name="models" title="Models" level="1"/>
+        </page>
+        <namespace name="qtldap_core" href="qtldap-core.html" status="active" access="public" location="ldaptreeitem.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/ldaptreeitem.h" lineno="27" documented="true" module="QtLdap">
+            <class name="ConcatenateTreesProxyModel" fullname="qtldap_core::ConcatenateTreesProxyModel" href="qtldap-core-concatenatetreesproxymodel.html" status="active" access="public" location="concatenatetreesproxymodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/concatenatetreesproxymodel.h" lineno="33" documented="true" module="QtLdap" groups="model-view" brief="Proxies multiple source tree models, concatenating their rows and columns">
+                <function name="Q_DECLARE_PRIVATE" fullname="qtldap_core::ConcatenateTreesProxyModel::Q_DECLARE_PRIVATE" href="qtldap-core-concatenatetreesproxymodel.html#Q_DECLARE_PRIVATE" status="internal" access="private" location="concatenatetreesproxymodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/concatenatetreesproxymodel.h" lineno="36" meta="plain" virtual="non" const="false" static="false" final="false" override="false" type="int" signature="int Q_DECLARE_PRIVATE(qtldap_core::ConcatenateTreesProxyModel )">
+                    <parameter type="qtldap_core::ConcatenateTreesProxyModel" name="" default=""/>
+                </function>
+                <function name="addSourceModel" fullname="qtldap_core::ConcatenateTreesProxyModel::addSourceModel" href="qtldap-core-concatenatetreesproxymodel.html#addSourceModel" status="active" access="private" location="concatenatetreesproxymodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/concatenatetreesproxymodel.h" lineno="42" documented="true" meta="plain" virtual="non" const="false" static="false" final="false" override="false" type="void" signature="void addSourceModel(const int &amp;sourceModel)">
+                    <parameter type="const int &amp;" name="sourceModel" default=""/>
+                </function>
+                <function name="canDropMimeData" fullname="qtldap_core::ConcatenateTreesProxyModel::canDropMimeData" href="qtldap-core-concatenatetreesproxymodel.html#canDropMimeData" status="active" access="private" location="concatenatetreesproxymodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/concatenatetreesproxymodel.h" lineno="52" documented="true" meta="plain" virtual="non" const="true" static="false" final="false" override="true" type="bool" signature="bool canDropMimeData(const int *data, int action, int row, int column, const int &amp;parent) const override">
+                    <parameter type="const int *" name="data" default=""/>
+                    <parameter type="int" name="action" default=""/>
+                    <parameter type="int" name="row" default=""/>
+                    <parameter type="int" name="column" default=""/>
+                    <parameter type="const int &amp;" name="parent" default=""/>
+                </function>
+                <function name="columnCount" fullname="qtldap_core::ConcatenateTreesProxyModel::columnCount" href="qtldap-core-concatenatetreesproxymodel.html#columnCount" status="active" access="private" location="concatenatetreesproxymodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/concatenatetreesproxymodel.h" lineno="55" documented="true" meta="plain" virtual="non" const="true" static="false" final="false" override="true" type="int" signature="int columnCount(const int &amp;parent) const override">
+                    <parameter type="const int &amp;" name="parent" default="QModelIndex()"/>
+                </function>
+                <function name="data" fullname="qtldap_core::ConcatenateTreesProxyModel::data" href="qtldap-core-concatenatetreesproxymodel.html#data" status="active" access="private" location="concatenatetreesproxymodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/concatenatetreesproxymodel.h" lineno="57" documented="true" meta="plain" virtual="non" const="true" static="false" final="false" override="true" type="int" signature="int data(const int &amp;, int ) const override">
+                    <parameter type="const int &amp;" name="" default=""/>
+                    <parameter type="int" name="" default=""/>
+                </function>
+                <function name="dropMimeData" fullname="qtldap_core::ConcatenateTreesProxyModel::dropMimeData" href="qtldap-core-concatenatetreesproxymodel.html#dropMimeData" status="active" access="private" location="concatenatetreesproxymodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/concatenatetreesproxymodel.h" lineno="59" documented="true" meta="plain" virtual="non" const="false" static="false" final="false" override="true" type="bool" signature="bool dropMimeData(const int *data, int action, int row, int column, const int &amp;parent) override">
+                    <parameter type="const int *" name="data" default=""/>
+                    <parameter type="int" name="action" default=""/>
+                    <parameter type="int" name="row" default=""/>
+                    <parameter type="int" name="column" default=""/>
+                    <parameter type="const int &amp;" name="parent" default=""/>
+                </function>
+                <function name="flags" fullname="qtldap_core::ConcatenateTreesProxyModel::flags" href="qtldap-core-concatenatetreesproxymodel.html#flags" status="active" access="private" location="concatenatetreesproxymodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/concatenatetreesproxymodel.h" lineno="62" documented="true" meta="plain" virtual="non" const="true" static="false" final="false" override="true" type="int" signature="int flags(const int &amp;) const override">
+                    <parameter type="const int &amp;" name="" default=""/>
+                </function>
+                <function name="headerData" fullname="qtldap_core::ConcatenateTreesProxyModel::headerData" href="qtldap-core-concatenatetreesproxymodel.html#headerData" status="active" access="private" location="concatenatetreesproxymodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/concatenatetreesproxymodel.h" lineno="64" documented="true" meta="plain" virtual="non" const="true" static="false" final="false" override="true" type="int" signature="int headerData(int , int , int ) const override">
+                    <parameter type="int" name="" default=""/>
+                    <parameter type="int" name="" default=""/>
+                    <parameter type="int" name="" default=""/>
+                </function>
+                <function name="index" fullname="qtldap_core::ConcatenateTreesProxyModel::index" href="qtldap-core-concatenatetreesproxymodel.html#index" status="active" access="private" location="concatenatetreesproxymodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/concatenatetreesproxymodel.h" lineno="66" documented="true" meta="plain" virtual="non" const="true" static="false" final="false" override="true" type="int" signature="int index(int , int , const int &amp;) const override">
+                    <parameter type="int" name="" default=""/>
+                    <parameter type="int" name="" default=""/>
+                    <parameter type="const int &amp;" name="" default=""/>
+                </function>
+                <function name="itemData" fullname="qtldap_core::ConcatenateTreesProxyModel::itemData" href="qtldap-core-concatenatetreesproxymodel.html#itemData" status="active" access="private" location="concatenatetreesproxymodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/concatenatetreesproxymodel.h" lineno="68" documented="true" meta="plain" virtual="non" const="true" static="false" final="false" override="true" type="int" signature="int itemData(const int &amp;) const override">
+                    <parameter type="const int &amp;" name="" default=""/>
+                </function>
+                <function name="mapFromSource" fullname="qtldap_core::ConcatenateTreesProxyModel::mapFromSource" href="qtldap-core-concatenatetreesproxymodel.html#mapFromSource" status="active" access="private" location="concatenatetreesproxymodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/concatenatetreesproxymodel.h" lineno="48" documented="true" meta="plain" virtual="non" const="true" static="false" final="false" override="true" type="int" signature="int mapFromSource(const int &amp;) const override">
+                    <parameter type="const int &amp;" name="" default=""/>
+                </function>
+                <function name="mapToSource" fullname="qtldap_core::ConcatenateTreesProxyModel::mapToSource" href="qtldap-core-concatenatetreesproxymodel.html#mapToSource" status="active" access="private" location="concatenatetreesproxymodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/concatenatetreesproxymodel.h" lineno="50" documented="true" meta="plain" virtual="non" const="true" static="false" final="false" override="true" type="int" signature="int mapToSource(const int &amp;) const override">
+                    <parameter type="const int &amp;" name="" default=""/>
+                </function>
+                <function name="mimeData" fullname="qtldap_core::ConcatenateTreesProxyModel::mimeData" href="qtldap-core-concatenatetreesproxymodel.html#mimeData" status="active" access="private" location="concatenatetreesproxymodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/concatenatetreesproxymodel.h" lineno="70" documented="true" meta="plain" virtual="non" const="true" static="false" final="false" override="true" type="int *" signature="int * mimeData(const int &amp;) const override">
+                    <parameter type="const int &amp;" name="" default=""/>
+                </function>
+                <function name="mimeTypes" fullname="qtldap_core::ConcatenateTreesProxyModel::mimeTypes" href="qtldap-core-concatenatetreesproxymodel.html#mimeTypes" status="active" access="private" location="concatenatetreesproxymodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/concatenatetreesproxymodel.h" lineno="72" documented="true" meta="plain" virtual="non" const="true" static="false" final="false" override="true" type="int" signature="int mimeTypes() const override"/>
+                <function name="parent" fullname="qtldap_core::ConcatenateTreesProxyModel::parent" href="qtldap-core-concatenatetreesproxymodel.html#parent" status="active" access="private" location="concatenatetreesproxymodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/concatenatetreesproxymodel.h" lineno="74" documented="true" meta="plain" virtual="non" const="true" static="false" final="false" override="true" type="int" signature="int parent(const int &amp;) const override">
+                    <parameter type="const int &amp;" name="" default=""/>
+                </function>
+                <function name="removeSourceModel" fullname="qtldap_core::ConcatenateTreesProxyModel::removeSourceModel" href="qtldap-core-concatenatetreesproxymodel.html#removeSourceModel" status="active" access="private" location="concatenatetreesproxymodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/concatenatetreesproxymodel.h" lineno="44" documented="true" meta="plain" virtual="non" const="false" static="false" final="false" override="false" type="void" signature="void removeSourceModel(const int &amp;sourceModel)">
+                    <parameter type="const int &amp;" name="sourceModel" default=""/>
+                </function>
+                <function name="rowCount" fullname="qtldap_core::ConcatenateTreesProxyModel::rowCount" href="qtldap-core-concatenatetreesproxymodel.html#rowCount" status="active" access="private" location="concatenatetreesproxymodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/concatenatetreesproxymodel.h" lineno="76" documented="true" meta="plain" virtual="non" const="true" static="false" final="false" override="true" type="int" signature="int rowCount(const int &amp;parent) const override">
+                    <parameter type="const int &amp;" name="parent" default="QModelIndex()"/>
+                </function>
+                <function name="setData" fullname="qtldap_core::ConcatenateTreesProxyModel::setData" href="qtldap-core-concatenatetreesproxymodel.html#setData" status="active" access="private" location="concatenatetreesproxymodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/concatenatetreesproxymodel.h" lineno="78" documented="true" meta="plain" virtual="non" const="false" static="false" final="false" override="true" type="bool" signature="bool setData(const int &amp;index, const int &amp;value, int role) override">
+                    <parameter type="const int &amp;" name="index" default=""/>
+                    <parameter type="const int &amp;" name="value" default=""/>
+                    <parameter type="int" name="role" default="..."/>
+                </function>
+                <function name="setItemData" fullname="qtldap_core::ConcatenateTreesProxyModel::setItemData" href="qtldap-core-concatenatetreesproxymodel.html#setItemData" status="active" access="private" location="concatenatetreesproxymodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/concatenatetreesproxymodel.h" lineno="80" documented="true" meta="plain" virtual="non" const="false" static="false" final="false" override="true" type="bool" signature="bool setItemData(const int &amp;proxyIndex, const int &amp;roles) override">
+                    <parameter type="const int &amp;" name="proxyIndex" default=""/>
+                    <parameter type="const int &amp;" name="roles" default=""/>
+                </function>
+                <function name="sourceModels" fullname="qtldap_core::ConcatenateTreesProxyModel::sourceModels" href="qtldap-core-concatenatetreesproxymodel.html#sourceModels" status="active" access="private" location="concatenatetreesproxymodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/concatenatetreesproxymodel.h" lineno="46" documented="true" meta="plain" virtual="non" const="true" static="false" final="false" override="false" type="int" signature="int sourceModels() const"/>
+                <function name="span" fullname="qtldap_core::ConcatenateTreesProxyModel::span" href="qtldap-core-concatenatetreesproxymodel.html#span" status="active" access="private" location="concatenatetreesproxymodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/concatenatetreesproxymodel.h" lineno="82" documented="true" meta="plain" virtual="non" const="true" static="false" final="false" override="true" type="int" signature="int span(const int &amp;) const override">
+                    <parameter type="const int &amp;" name="" default=""/>
+                </function>
+                <function name="~ConcatenateTreesProxyModel" fullname="qtldap_core::ConcatenateTreesProxyModel::~ConcatenateTreesProxyModel" href="qtldap-core-concatenatetreesproxymodel.html#dtor.ConcatenateTreesProxyModel" status="active" access="private" location="concatenatetreesproxymodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/concatenatetreesproxymodel.h" lineno="40" documented="true" meta="destructor" virtual="non" const="false" static="false" final="false" override="false" type="" signature="~ConcatenateTreesProxyModel()"/>
+                <variable name="d_ptr" fullname="qtldap_core::ConcatenateTreesProxyModel::d_ptr" href="qtldap-core-concatenatetreesproxymodel.html#d_ptr-var" status="internal" access="private" location="concatenatetreesproxymodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/concatenatetreesproxymodel.h" lineno="85" type="qtldap_core::ConcatenateTreesProxyModelPrivate *" static="false"/>
+            </class>
+            <class name="LDAPEntity" fullname="qtldap_core::LDAPEntity" href="qtldap-core-ldapentity.html" status="internal" access="private" location="ldapentity.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/ldapentity.h" lineno="28" bases="qtldap_core::LDAPTreeItem">
+                <function name="LDAPEntity" fullname="qtldap_core::LDAPEntity::LDAPEntity" href="qtldap-core-ldapentity.html#LDAPEntity" status="internal" access="private" location="ldapentity.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/ldapentity.h" lineno="31" meta="constructor" virtual="non" const="false" static="false" final="false" override="false" type="" signature="LDAPEntity()"/>
+                <function name="~LDAPEntity" fullname="qtldap_core::LDAPEntity::~LDAPEntity" href="qtldap-core-ldapentity.html#dtor.LDAPEntity" status="internal" access="private" location="ldapentity.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/ldapentity.h" lineno="32" meta="destructor" virtual="non" const="false" static="false" final="false" override="false" type="" signature="~LDAPEntity()"/>
+            </class>
+            <class name="LDAPTreeItem" fullname="qtldap_core::LDAPTreeItem" href="qtldap-core-ldaptreeitem.html" status="internal" access="private" location="ldaptreeitem.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/ldaptreeitem.h" lineno="30">
+                <function name="LDAPTreeItem" fullname="qtldap_core::LDAPTreeItem::LDAPTreeItem" href="qtldap-core-ldaptreeitem.html#LDAPTreeItem" status="internal" access="private" location="ldaptreeitem.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/ldaptreeitem.h" lineno="33" meta="constructor" virtual="non" const="false" static="false" final="false" override="false" type="" signature="LDAPTreeItem()"/>
+                <function name="canFetchMore" fullname="qtldap_core::LDAPTreeItem::canFetchMore" href="qtldap-core-ldaptreeitem.html#canFetchMore" status="internal" access="private" location="ldaptreeitem.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/ldaptreeitem.h" lineno="39" meta="plain" virtual="pure" const="true" static="false" final="false" override="false" type="bool" signature="bool canFetchMore() const = 0"/>
+                <function name="fetchMore" fullname="qtldap_core::LDAPTreeItem::fetchMore" href="qtldap-core-ldaptreeitem.html#fetchMore" status="internal" access="private" location="ldaptreeitem.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/ldaptreeitem.h" lineno="40" meta="plain" virtual="pure" const="false" static="false" final="false" override="false" type="void" signature="void fetchMore() = 0"/>
+                <function name="getChildren" fullname="qtldap_core::LDAPTreeItem::getChildren" href="qtldap-core-ldaptreeitem.html#getChildren" status="internal" access="private" location="ldaptreeitem.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/ldaptreeitem.h" lineno="37" meta="plain" virtual="non" const="true" static="false" final="false" override="false" type="int" signature="int getChildren() const"/>
+                <function name="getParent" fullname="qtldap_core::LDAPTreeItem::getParent" href="qtldap-core-ldaptreeitem.html#getParent" status="internal" access="private" location="ldaptreeitem.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/ldaptreeitem.h" lineno="36" meta="plain" virtual="non" const="true" static="false" final="false" override="false" type="qtldap_core::LDAPTreeItem *" signature="qtldap_core::LDAPTreeItem * getParent() const"/>
+                <function name="~LDAPTreeItem" fullname="qtldap_core::LDAPTreeItem::~LDAPTreeItem" href="qtldap-core-ldaptreeitem.html#dtor.LDAPTreeItem" status="internal" access="private" location="ldaptreeitem.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/ldaptreeitem.h" lineno="34" meta="destructor" virtual="non" const="false" static="false" final="false" override="false" type="" signature="~LDAPTreeItem()"/>
+                <variable name="children" fullname="qtldap_core::LDAPTreeItem::children" href="qtldap-core-ldaptreeitem.html#children-var" status="internal" access="private" location="ldaptreeitem.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/ldaptreeitem.h" lineno="43" type="int" static="false"/>
+                <variable name="parent" fullname="qtldap_core::LDAPTreeItem::parent" href="qtldap-core-ldaptreeitem.html#parent-var" status="internal" access="private" location="ldaptreeitem.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/ldaptreeitem.h" lineno="44" type="qtldap_core::LDAPTreeItem *" static="false"/>
+            </class>
+            <class name="LDAPTreeModel" fullname="qtldap_core::LDAPTreeModel" href="qtldap-core-ldaptreemodel.html" status="active" access="public" location="ldaptreemodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/ldaptreemodel.h" lineno="31" documented="true" module="QtLdap" groups="model-view" brief="Contains list of LDAP entities">
+                <function name="Q_DECLARE_PRIVATE" fullname="qtldap_core::LDAPTreeModel::Q_DECLARE_PRIVATE" href="qtldap-core-ldaptreemodel.html#Q_DECLARE_PRIVATE" status="internal" access="private" location="ldaptreemodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/ldaptreemodel.h" lineno="34" meta="plain" virtual="non" const="false" static="false" final="false" override="false" type="int" signature="int Q_DECLARE_PRIVATE(qtldap_core::LDAPTreeModel )">
+                    <parameter type="qtldap_core::LDAPTreeModel" name="" default=""/>
+                </function>
+                <function name="canFetchMore" fullname="qtldap_core::LDAPTreeModel::canFetchMore" href="qtldap-core-ldaptreemodel.html#canFetchMore" status="active" access="private" location="ldaptreemodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/ldaptreemodel.h" lineno="56" documented="true" meta="plain" virtual="non" const="true" static="false" final="false" override="true" type="bool" signature="bool canFetchMore(const int &amp;parent) const override">
+                    <parameter type="const int &amp;" name="parent" default=""/>
+                </function>
+                <function name="columnCount" fullname="qtldap_core::LDAPTreeModel::columnCount" href="qtldap-core-ldaptreemodel.html#columnCount" status="active" access="private" location="ldaptreemodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/ldaptreemodel.h" lineno="47" documented="true" meta="plain" virtual="non" const="true" static="false" final="false" override="true" type="int" signature="int columnCount(const int &amp;parent) const override">
+                    <parameter type="const int &amp;" name="parent" default="QModelIndex()"/>
+                </function>
+                <function name="data" fullname="qtldap_core::LDAPTreeModel::data" href="qtldap-core-ldaptreemodel.html#data" status="active" access="private" location="ldaptreemodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/ldaptreemodel.h" lineno="49" documented="true" meta="plain" virtual="non" const="true" static="false" final="false" override="true" type="int" signature="int data(const int &amp;, int ) const override">
+                    <parameter type="const int &amp;" name="" default=""/>
+                    <parameter type="int" name="" default=""/>
+                </function>
+                <function name="fetchMore" fullname="qtldap_core::LDAPTreeModel::fetchMore" href="qtldap-core-ldaptreemodel.html#fetchMore" status="active" access="private" location="ldaptreemodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/ldaptreemodel.h" lineno="58" documented="true" meta="plain" virtual="non" const="false" static="false" final="false" override="true" type="void" signature="void fetchMore(const int &amp;parent) override">
+                    <parameter type="const int &amp;" name="parent" default=""/>
+                </function>
+                <function name="flags" fullname="qtldap_core::LDAPTreeModel::flags" href="qtldap-core-ldaptreemodel.html#flags" status="active" access="private" location="ldaptreemodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/ldaptreemodel.h" lineno="54" documented="true" meta="plain" virtual="non" const="true" static="false" final="false" override="true" type="int" signature="int flags(const int &amp;) const override">
+                    <parameter type="const int &amp;" name="" default=""/>
+                </function>
+                <function name="hasChildren" fullname="qtldap_core::LDAPTreeModel::hasChildren" href="qtldap-core-ldaptreemodel.html#hasChildren" status="active" access="private" location="ldaptreemodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/ldaptreemodel.h" lineno="60" documented="true" meta="plain" virtual="non" const="true" static="false" final="false" override="true" type="bool" signature="bool hasChildren(const int &amp;parent) const override">
+                    <parameter type="const int &amp;" name="parent" default=""/>
+                </function>
+                <function name="index" fullname="qtldap_core::LDAPTreeModel::index" href="qtldap-core-ldaptreemodel.html#index" status="active" access="private" location="ldaptreemodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/ldaptreemodel.h" lineno="40" documented="true" meta="plain" virtual="non" const="true" static="false" final="false" override="true" type="int" signature="int index(int , int , const int &amp;) const override">
+                    <parameter type="int" name="" default=""/>
+                    <parameter type="int" name="" default=""/>
+                    <parameter type="const int &amp;" name="" default=""/>
+                </function>
+                <function name="parent" fullname="qtldap_core::LDAPTreeModel::parent" href="qtldap-core-ldaptreemodel.html#parent" status="active" access="private" location="ldaptreemodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/ldaptreemodel.h" lineno="43" documented="true" meta="plain" virtual="non" const="true" static="false" final="false" override="true" type="int" signature="int parent(const int &amp;) const override">
+                    <parameter type="const int &amp;" name="" default=""/>
+                </function>
+                <function name="rowCount" fullname="qtldap_core::LDAPTreeModel::rowCount" href="qtldap-core-ldaptreemodel.html#rowCount" status="active" access="private" location="ldaptreemodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/ldaptreemodel.h" lineno="45" documented="true" meta="plain" virtual="non" const="true" static="false" final="false" override="true" type="int" signature="int rowCount(const int &amp;parent) const override">
+                    <parameter type="const int &amp;" name="parent" default="QModelIndex()"/>
+                </function>
+                <function name="setData" fullname="qtldap_core::LDAPTreeModel::setData" href="qtldap-core-ldaptreemodel.html#setData" status="active" access="private" location="ldaptreemodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/ldaptreemodel.h" lineno="51" documented="true" meta="plain" virtual="non" const="false" static="false" final="false" override="true" type="bool" signature="bool setData(const int &amp;index, const int &amp;value, int role) override">
+                    <parameter type="const int &amp;" name="index" default=""/>
+                    <parameter type="const int &amp;" name="value" default=""/>
+                    <parameter type="int" name="role" default="..."/>
+                </function>
+                <function name="~LDAPTreeModel" fullname="qtldap_core::LDAPTreeModel::~LDAPTreeModel" href="qtldap-core-ldaptreemodel.html#dtor.LDAPTreeModel" status="active" access="private" location="ldaptreemodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/ldaptreemodel.h" lineno="38" documented="true" meta="destructor" virtual="non" const="false" static="false" final="false" override="false" type="" signature="~LDAPTreeModel()"/>
+                <variable name="d_ptr" fullname="qtldap_core::LDAPTreeModel::d_ptr" href="qtldap-core-ldaptreemodel.html#d_ptr-var" status="internal" access="private" location="ldaptreemodel.h" filepath="/home/runner/work/libqtldap/libqtldap/src/core/ldaptreemodel.h" lineno="63" type="qtldap_core::LDAPTreeModelPrivate *" static="false"/>
+            </class>
+        </namespace>
+        <group name="model-view" href="model-view.html" status="internal" seen="false" title="" members="ConcatenateTreesProxyModel,LDAPTreeModel"/>
+        <module name="QtLdap" href="qtldap-module.html" status="internal" seen="false" title="" members="ConcatenateTreesProxyModel,qtldap_core,LDAPTreeModel"/>
+    </namespace>
+</INDEX>
