@@ -33,12 +33,12 @@ struct TreeNode
 
     QUuid id;
 
-    QAbstractItemModel* sourceModel;
+    const QAbstractItemModel* sourceModel;
 
     int row;
     int column;
 
-    QMap<QUuid, TreeNode> children;
+    QList<TreeNode*> children;
 
     bool isValid;
 
@@ -50,7 +50,7 @@ struct TreeNode
         , isValid(false)
     {}
 
-    TreeNode(QUuid id, QAbstractItemModel* sourceModel, int row, int column)
+    TreeNode(QUuid id, const QAbstractItemModel* sourceModel, int row, int column)
         : id(id)
         , sourceModel(sourceModel)
         , row(row)
@@ -58,7 +58,7 @@ struct TreeNode
         , isValid(true)
     {}
 
-    TreeNode(QUuid id, QAbstractItemModel* sourceModel, int row, int column, QMap<QUuid, TreeNode>& children)
+    TreeNode(QUuid id, const QAbstractItemModel* sourceModel, int row, int column, QList<TreeNode*>& children)
         : TreeNode(id, sourceModel, row, column)
     {
         this->children = children;
@@ -85,6 +85,10 @@ public:
     QList<QSharedPointer<QAbstractItemModel> > models;
 
 private:
+    void initializeTree(const QAbstractItemModel* model);
+    void addTree(const QAbstractItemModel* model);
+
+private:
     ConcatenateTreesProxyModel *q_ptr;
 
     TreeNode rootNode;
@@ -100,84 +104,67 @@ TreeNode ConcatenateTreesProxyModelPrivate::findSourceModelForRowColumn(int row,
     return TreeNode();
 }
 
-TreeNode mergeSameRoot(const TreeNode& tree1, const TreeNode& tree2)
-{
-    QMap<QUuid, TreeNode> children;
-    for (const auto& pair : tree2.children)
-    {
-        auto it = tree1.children.find(pair.id);
-        if (it != tree1.children.end())
-        {
-            children[pair.id] = mergeSameRoot(*it, pair);
-        }
-        else
-        {
-            children[pair.id] = pair;
-        }
-    }
+typedef std::function<void(const QModelIndex & index, const QAbstractItemModel *model, TreeNode *treeNode)> ItemHandler;
 
-    return TreeNode(tree1.id, tree1.sourceModel, tree1.row, tree1.column, children);
-}
-
-TreeNode tryMergeIntoFirst(const TreeNode& tree1, const TreeNode& tree2)
+void iterate(const QModelIndex &index, const QAbstractItemModel *model, ItemHandler handler, TreeNode *treeNode)
 {
-     if (tree1.id == tree2.id)
+     if (index.isValid())
      {
-         return mergeSameRoot(tree1, tree2);
-     }
-     else if (tree1.children.empty())
-     {
-         return TreeNode();
-     }
-     else
-     {
-        for (const auto& pair : tree1.children)
-        {
-            return  tryMergeIntoFirst(pair, tree2);
-        }
+          handler(index, model, treeNode);
      }
 
-     return TreeNode();
+     if (!model->hasChildren(index) || (index.flags() & Qt::ItemNeverHasChildren))
+     {
+          return;
+     }
+
+     for (int i = 0; i < model->rowCount(index); ++i)
+     {
+         iterate(model->index(i, 0, index), model, handler, treeNode);
+     }
 }
 
-TreeNode tryMergeEither(const TreeNode& tree1, const TreeNode& tree2)
+void ConcatenateTreesProxyModelPrivate::initializeTree(const QAbstractItemModel* model)
 {
-    TreeNode result = tryMergeIntoFirst(tree1, tree2);
-    if (!result.isValid)
+    ItemHandler handler = [](const QModelIndex &index, const QAbstractItemModel *model, TreeNode *treeNode)
     {
-        result = tryMergeIntoFirst(tree2, tree1);
-    }
+        // TODO: Check that QUuid constructor creates new unique uuid.
+        TreeNode* child = new TreeNode(QUuid(), model, index.row(), index.column());
 
-    return result;
+        treeNode->children.push_back(child);
+
+        treeNode = child;
+    };
+
+    TreeNode* rootNodePointer = &rootNode;
+
+    for (int i = 0; i < model->rowCount(); ++i)
+    {
+        iterate(model->index(i, 0), model, handler, rootNodePointer);
+    }
 }
 
-TreeNode tryMergeOrCreateList(const TreeNode& tree1, const TreeNode& tree2)
+
+void ConcatenateTreesProxyModelPrivate::addTree(const QAbstractItemModel *model)
 {
-    TreeNode result = tryMergeEither(tree1, tree2);
-    if (result.isValid)
-    {
-        return result;
-    }
-
-    result.children[tree1.id] = tree1;
-    result.children[tree2.id] = tree2;
-
-    result.isValid = true;
-
-    return result;
+    // TODO: Implement.
 }
 
 bool ConcatenateTreesProxyModelPrivate::appendModel(const QSharedPointer<QAbstractItemModel> &model)
 {
-    models.append(model);
 
-    TreeNode modelNode(QUuid(), model.get(), 0, 0);
-
-    auto result = tryMergeOrCreateList(rootNode, modelNode);
-
-    if (result.isValid)
+    if (!models.contains(model))
     {
-        rootNode = result;
+        if (models.size() == 0)
+        {
+            initializeTree(model.get());
+        }
+        else
+        {
+            addTree(model.get());
+        }
+
+        models.append(model);
 
         return true;
     }
@@ -185,9 +172,28 @@ bool ConcatenateTreesProxyModelPrivate::appendModel(const QSharedPointer<QAbstra
     return false;
 }
 
+void removeChildren(const QSharedPointer<QAbstractItemModel> &model, TreeNode* rootNode)
+{
+    auto& children = rootNode->children;
+
+    for (auto& child : children)
+    {
+        removeChildren(model, child);
+    }
+
+    children.erase(std::remove_if(children.begin(), children.end(),
+                                  [&model](TreeNode* node) { return node->sourceModel == model.get(); }),
+                   children.end());
+}
+
 bool ConcatenateTreesProxyModelPrivate::removeModel(const QSharedPointer<QAbstractItemModel> &model)
 {
-    // TODO: Implement tree cleaning.
+    if (models.size() == 0)
+    {
+        return true;
+    }
+
+    removeChildren(model, &rootNode);
 
     return models.removeOne(model);
 }
