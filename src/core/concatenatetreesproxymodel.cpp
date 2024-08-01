@@ -22,6 +22,7 @@
 
 #include <QDebug>
 #include <QSize>
+#include <QStack>
 #include <QUuid>
 #include <optional>
 
@@ -38,7 +39,7 @@ struct TreeNode
     int row;
     int column;
 
-    QList<TreeNode*> children;
+    QVector<TreeNode*> children;
 
     bool isValid;
 
@@ -58,7 +59,7 @@ struct TreeNode
         , isValid(true)
     {}
 
-    TreeNode(QUuid id, const QAbstractItemModel* sourceModel, int row, int column, QList<TreeNode*>& children)
+    TreeNode(QUuid id, const QAbstractItemModel* sourceModel, int row, int column, QVector<TreeNode*>& children)
         : TreeNode(id, sourceModel, row, column)
     {
         this->children = children;
@@ -85,7 +86,7 @@ public:
     QList<QSharedPointer<QAbstractItemModel> > models;
 
 private:
-    void initializeTree(const QAbstractItemModel* model);
+    void initializeTree(const QAbstractItemModel* model, const TreeNode *rootNodePointer);
     void addTree(const QAbstractItemModel* model);
 
 private:
@@ -96,10 +97,28 @@ private:
 
 TreeNode ConcatenateTreesProxyModelPrivate::findSourceModelForRowColumn(int row, int column) const
 {
-    Q_UNUSED(row);
-    Q_UNUSED(column);
 
-    // TODO: Implement.
+    QStack<TreeNode*> children;
+
+    for (auto child : rootNode.children)
+    {
+        children.push(child);
+    }
+
+    while (children.top())
+    {
+        TreeNode* child = children.pop();
+
+        if (child->row == row && child->column == column)
+        {
+            return *child;
+        }
+
+        if (!child->children.isEmpty())
+        {
+            children.append(child->children);
+        }
+    }
 
     return TreeNode();
 }
@@ -124,7 +143,7 @@ void iterate(const QModelIndex &index, const QAbstractItemModel *model, ItemHand
      }
 }
 
-void ConcatenateTreesProxyModelPrivate::initializeTree(const QAbstractItemModel* model)
+void ConcatenateTreesProxyModelPrivate::initializeTree(const QAbstractItemModel* model, const TreeNode* rootNodePointer)
 {
     ItemHandler handler = [](const QModelIndex &index, const QAbstractItemModel *model, TreeNode *treeNode)
     {
@@ -136,40 +155,40 @@ void ConcatenateTreesProxyModelPrivate::initializeTree(const QAbstractItemModel*
         treeNode = child;
     };
 
-    TreeNode* rootNodePointer = &rootNode;
+    TreeNode* currentNodePointer = const_cast<TreeNode*>(rootNodePointer);
 
     for (int i = 0; i < model->rowCount(); ++i)
     {
-        iterate(model->index(i, 0), model, handler, rootNodePointer);
+        iterate(model->index(i, 0), model, handler, currentNodePointer);
     }
 }
 
 
 void ConcatenateTreesProxyModelPrivate::addTree(const QAbstractItemModel *model)
 {
-    // TODO: Implement.
+    //TODO: Implement.
 }
 
 bool ConcatenateTreesProxyModelPrivate::appendModel(const QSharedPointer<QAbstractItemModel> &model)
 {
 
-    if (!models.contains(model))
+    if (models.contains(model))
     {
-        if (models.size() == 0)
-        {
-            initializeTree(model.get());
-        }
-        else
-        {
-            addTree(model.get());
-        }
-
-        models.append(model);
-
-        return true;
+        return false;
     }
 
-    return false;
+    if (models.size() == 0)
+    {
+        initializeTree(model.get(), &rootNode);
+    }
+    else
+    {
+        addTree(model.get());
+    }
+
+    models.append(model);
+
+    return true;
 }
 
 void removeChildren(const QSharedPointer<QAbstractItemModel> &model, TreeNode* rootNode)
@@ -193,9 +212,14 @@ bool ConcatenateTreesProxyModelPrivate::removeModel(const QSharedPointer<QAbstra
         return true;
     }
 
-    removeChildren(model, &rootNode);
+    if (models.removeOne(model))
+    {
+        removeChildren(model, &rootNode);
 
-    return models.removeOne(model);
+        return true;
+    }
+
+    return false;
 }
 
 /*!
