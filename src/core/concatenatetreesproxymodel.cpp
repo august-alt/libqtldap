@@ -31,10 +31,7 @@ namespace qtldap_core
 
 struct TreeNode
 {
-
-    QUuid id;
-
-    const QAbstractItemModel* sourceModel;
+    QVector<const QAbstractItemModel*> sourceModels;
 
     int row;
     int column;
@@ -44,23 +41,23 @@ struct TreeNode
     bool isValid;
 
     explicit TreeNode()
-        : id()
-        , sourceModel(nullptr)
+        : sourceModels()
         , row(0)
         , column(0)
         , isValid(false)
     {}
 
-    TreeNode(QUuid id, const QAbstractItemModel* sourceModel, int row, int column)
-        : id(id)
-        , sourceModel(sourceModel)
+    TreeNode(const QAbstractItemModel* sourceModel, int row, int column)
+        : sourceModels()
         , row(row)
         , column(column)
         , isValid(true)
-    {}
+    {
+        sourceModels.append(sourceModel);
+    }
 
-    TreeNode(QUuid id, const QAbstractItemModel* sourceModel, int row, int column, QVector<TreeNode*>& children)
-        : TreeNode(id, sourceModel, row, column)
+    TreeNode(const QAbstractItemModel* sourceModel, int row, int column, QVector<TreeNode*>& children)
+        : TreeNode(sourceModel, row, column)
     {
         this->children = children;
     }
@@ -147,8 +144,7 @@ void ConcatenateTreesProxyModelPrivate::initializeTree(const QAbstractItemModel*
 {
     ItemHandler handler = [](const QModelIndex &index, const QAbstractItemModel *model, TreeNode *treeNode)
     {
-        // TODO: Check that QUuid constructor creates new unique uuid.
-        TreeNode* child = new TreeNode(QUuid(), model, index.row(), index.column());
+        TreeNode* child = new TreeNode(model, index.row(), index.column());
 
         treeNode->children.push_back(child);
 
@@ -163,10 +159,43 @@ void ConcatenateTreesProxyModelPrivate::initializeTree(const QAbstractItemModel*
     }
 }
 
+bool areEqual(TreeNode* firstNode, TreeNode* secondNode)
+{
+    // TODO: Create node comparator and use it in this function.
+    return false;
+}
+
+void processTreeNodes(TreeNode* firstNode, TreeNode* secondNode)
+{
+    for (auto& secondTreeChild : secondNode->children)
+    {
+        bool equalNodeFound = false;
+
+        for (auto& firstTreeChild : firstNode->children)
+        {
+            if (areEqual(firstTreeChild, secondTreeChild))
+            {
+                firstTreeChild->sourceModels.append(secondTreeChild->sourceModels[0]);
+
+                processTreeNodes(firstTreeChild, secondTreeChild);
+            }
+        }
+
+        if (!equalNodeFound)
+        {
+            firstNode->children.append(secondTreeChild);
+        }
+    }
+}
+
 
 void ConcatenateTreesProxyModelPrivate::addTree(const QAbstractItemModel *model)
 {
-    //TODO: Implement.
+    TreeNode secondModelRoot;
+
+    initializeTree(model, &secondModelRoot);
+
+    processTreeNodes(&rootNode, &secondModelRoot);
 }
 
 bool ConcatenateTreesProxyModelPrivate::appendModel(const QSharedPointer<QAbstractItemModel> &model)
@@ -201,8 +230,13 @@ void removeChildren(const QSharedPointer<QAbstractItemModel> &model, TreeNode* r
     }
 
     children.erase(std::remove_if(children.begin(), children.end(),
-                                  [&model](TreeNode* node) { return node->sourceModel == model.get(); }),
+                                  [&model](TreeNode* node)
+                                  {
+                                      return node->sourceModels.size() == 1 && node->sourceModels.contains(model.get());
+                                  }),
                    children.end());
+
+    rootNode->sourceModels.removeOne(model.get());
 }
 
 bool ConcatenateTreesProxyModelPrivate::removeModel(const QSharedPointer<QAbstractItemModel> &model)
@@ -336,12 +370,12 @@ QModelIndex ConcatenateTreesProxyModel::mapToSource(const QModelIndex &proxyInde
     int column = proxyIndex.column();
 
     TreeNode sourceIndex = d->findSourceModelForRowColumn(row, column);
-    if (!sourceIndex.sourceModel)
+    if (sourceIndex.sourceModels.isEmpty())
     {
         return QModelIndex();
     }
 
-    return sourceIndex.sourceModel->index(sourceIndex.row, sourceIndex.column);
+    return sourceIndex.sourceModels[0]->index(sourceIndex.row, sourceIndex.column);
 }
 
 /*!
