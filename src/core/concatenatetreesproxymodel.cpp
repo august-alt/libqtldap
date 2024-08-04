@@ -40,6 +40,8 @@ struct TreeNode
 
     bool isValid;
 
+    QModelIndex index;
+
     explicit TreeNode()
         : sourceModels()
         , row(0)
@@ -63,6 +65,8 @@ struct TreeNode
     }
 };
 
+typedef std::function<void(const QModelIndex & index, const QAbstractItemModel *model, TreeNode *treeNode)> ItemHandler;
+
 class ConcatenateTreesProxyModelPrivate
 {
     Q_DECLARE_PUBLIC(ConcatenateTreesProxyModel)
@@ -85,6 +89,10 @@ public:
 private:
     void initializeTree(const QAbstractItemModel* model, const TreeNode *rootNodePointer);
     void addTree(const QAbstractItemModel* model);
+
+    void iterateOverTree(const QModelIndex &index, const QAbstractItemModel *model,
+                         ItemHandler handler, TreeNode *treeNode);
+    void mergeTreeNodes(TreeNode* firstNode, TreeNode* secondNode);
 
 private:
     ConcatenateTreesProxyModel *q_ptr;
@@ -120,31 +128,38 @@ TreeNode ConcatenateTreesProxyModelPrivate::findSourceModelForRowColumn(int row,
     return TreeNode();
 }
 
-typedef std::function<void(const QModelIndex & index, const QAbstractItemModel *model, TreeNode *treeNode)> ItemHandler;
-
-void iterate(const QModelIndex &index, const QAbstractItemModel *model, ItemHandler handler, TreeNode *treeNode)
+void ConcatenateTreesProxyModelPrivate::iterateOverTree(const QModelIndex &index,
+                                                        const QAbstractItemModel *model,
+                                                        ItemHandler handler,
+                                                        TreeNode *treeNode)
 {
-     if (index.isValid())
+     if (!index.isValid())
      {
-          handler(index, model, treeNode);
+         return;
      }
 
      if (!model->hasChildren(index) || (index.flags() & Qt::ItemNeverHasChildren))
      {
-          return;
+         return;
      }
+
+     handler(index, model, treeNode);
 
      for (int i = 0; i < model->rowCount(index); ++i)
      {
-         iterate(model->index(i, 0, index), model, handler, treeNode);
+         iterateOverTree(model->index(i, 0, index), model, handler, treeNode);
      }
 }
 
 void ConcatenateTreesProxyModelPrivate::initializeTree(const QAbstractItemModel* model, const TreeNode* rootNodePointer)
 {
-    ItemHandler handler = [](const QModelIndex &index, const QAbstractItemModel *model, TreeNode *treeNode)
+    Q_Q(ConcatenateTreesProxyModel);
+
+    ItemHandler handler = [q](const QModelIndex &index, const QAbstractItemModel *model, TreeNode *treeNode)
     {
         TreeNode* child = new TreeNode(model, index.row(), index.column());
+
+        child->index = q->createIndex(index.row(), index.column(), child);
 
         treeNode->children.push_back(child);
 
@@ -155,7 +170,7 @@ void ConcatenateTreesProxyModelPrivate::initializeTree(const QAbstractItemModel*
 
     for (int i = 0; i < model->rowCount(); ++i)
     {
-        iterate(model->index(i, 0), model, handler, currentNodePointer);
+        iterateOverTree(model->index(i, 0), model, handler, currentNodePointer);
     }
 }
 
@@ -165,7 +180,7 @@ bool areEqual(TreeNode* firstNode, TreeNode* secondNode)
     return false;
 }
 
-void processTreeNodes(TreeNode* firstNode, TreeNode* secondNode)
+void ConcatenateTreesProxyModelPrivate::mergeTreeNodes(TreeNode* firstNode, TreeNode* secondNode)
 {
     for (auto& secondTreeChild : secondNode->children)
     {
@@ -177,7 +192,7 @@ void processTreeNodes(TreeNode* firstNode, TreeNode* secondNode)
             {
                 firstTreeChild->sourceModels.append(secondTreeChild->sourceModels[0]);
 
-                processTreeNodes(firstTreeChild, secondTreeChild);
+                mergeTreeNodes(firstTreeChild, secondTreeChild);
             }
         }
 
@@ -195,7 +210,7 @@ void ConcatenateTreesProxyModelPrivate::addTree(const QAbstractItemModel *model)
 
     initializeTree(model, &secondModelRoot);
 
-    processTreeNodes(&rootNode, &secondModelRoot);
+    mergeTreeNodes(&rootNode, &secondModelRoot);
 }
 
 bool ConcatenateTreesProxyModelPrivate::appendModel(const QSharedPointer<QAbstractItemModel> &model)
@@ -243,7 +258,7 @@ bool ConcatenateTreesProxyModelPrivate::removeModel(const QSharedPointer<QAbstra
 {
     if (models.size() == 0)
     {
-        return true;
+        return false;
     }
 
     if (models.removeOne(model))
@@ -307,7 +322,7 @@ void ConcatenateTreesProxyModel::removeSourceModel(const QSharedPointer<QAbstrac
 {
     Q_D(ConcatenateTreesProxyModel);
 
-    if (!d->models.removeOne(sourceModel))
+    if (!d->removeModel(sourceModel))
     {
         qWarning("ConcatenateTreesProxyModel: Unable to remove specified model; removeSourceModel failed.");
         Q_ASSERT(!"ConcatenateTreesProxyModel: Unable to remove specified model; removeSourceModel failed.");
@@ -343,7 +358,11 @@ QModelIndex ConcatenateTreesProxyModel::mapFromSource(const QModelIndex &sourceI
         Q_ASSERT(!"ConcatenateTreesProxyModel: Index from wrong model passed to mapFromSource.");
         return QModelIndex();
     }
-    // TODO: Implement actual mapping.
+    auto treeNode = d->findSourceModelForRowColumn(sourceIndex.row(), sourceIndex.column());
+    if (treeNode.isValid)
+    {
+        return treeNode.index;
+    }
 
     return QModelIndex();
 }
@@ -398,9 +417,18 @@ bool ConcatenateTreesProxyModel::canDropMimeData(const QMimeData *data, Qt::Drop
 */
 int ConcatenateTreesProxyModel::columnCount(const QModelIndex &parent) const
 {
-    Q_UNUSED(parent);
+    Q_D(const ConcatenateTreesProxyModel);
+    Q_ASSERT(checkIndex(parent, CheckIndexOption::IndexIsValid));
+    if (!parent.isValid())
+    {
+        return -1;
+    }
 
-    // TODO: Implement.
+    TreeNode node = d->findSourceModelForRowColumn(parent.row(), parent.column());
+    if (node.isValid)
+    {
+        return node.children.size();
+    }
 
     return -1;
 }
@@ -540,11 +568,14 @@ QModelIndex ConcatenateTreesProxyModel::parent(const QModelIndex &index) const
 */
 int ConcatenateTreesProxyModel::rowCount(const QModelIndex &parent) const
 {
-    Q_UNUSED(parent);
+    Q_ASSERT(checkIndex(parent, CheckIndexOption::IndexIsValid));
+    const QModelIndex sourceIndex = mapToSource(parent);
+    if (!sourceIndex.isValid())
+    {
+        return -1;
+    }
 
-    // TODO: Implement.
-
-    return -1;
+    return sourceIndex.model()->rowCount(sourceIndex);
 }
 
 /*!
