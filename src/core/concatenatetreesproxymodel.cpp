@@ -47,6 +47,7 @@ struct TreeNode
         , row(0)
         , column(0)
         , isValid(false)
+        , index()
     {}
 
     TreeNode(const QAbstractItemModel* sourceModel, int row, int column)
@@ -54,6 +55,7 @@ struct TreeNode
         , row(row)
         , column(column)
         , isValid(true)
+        , index()
     {
         sourceModels.append(sourceModel);
     }
@@ -583,13 +585,15 @@ int ConcatenateTreesProxyModel::rowCount(const QModelIndex &parent) const
 */
 bool ConcatenateTreesProxyModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    Q_UNUSED(index);
-    Q_UNUSED(value);
-    Q_UNUSED(role);
-
-    // TODO: Implement.
-
-    return false;
+    Q_ASSERT(checkIndex(index, CheckIndexOption::IndexIsValid));
+    const QModelIndex sourceIndex = mapToSource(index);
+    if (!sourceIndex.isValid())
+    {
+        return false;
+    }
+    // TODO: Check if we have to send dataChanged signal.
+    QAbstractItemModel *model = const_cast<QAbstractItemModel*>(sourceIndex.model());
+    return model->setData(sourceIndex, value, role);
 }
 
 /*!
