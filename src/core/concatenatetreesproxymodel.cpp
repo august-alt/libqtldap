@@ -591,9 +591,14 @@ bool ConcatenateTreesProxyModel::setData(const QModelIndex &index, const QVarian
     {
         return false;
     }
-    // TODO: Check if we have to send dataChanged signal.
     QAbstractItemModel *model = const_cast<QAbstractItemModel*>(sourceIndex.model());
-    return model->setData(sourceIndex, value, role);
+    bool result = model->setData(sourceIndex, value, role);
+    if (result)
+    {
+        emit dataChanged(index, index, { role });
+    }
+
+    return result;
 }
 
 /*!
@@ -601,12 +606,15 @@ bool ConcatenateTreesProxyModel::setData(const QModelIndex &index, const QVarian
 */
 bool ConcatenateTreesProxyModel::setItemData(const QModelIndex &proxyIndex, const QMap<int, QVariant> &roles)
 {
-    Q_UNUSED(proxyIndex);
-    Q_UNUSED(roles);
+    Q_ASSERT(checkIndex(proxyIndex, CheckIndexOption::IndexIsValid));
+    const QModelIndex sourceIndex = mapToSource(proxyIndex);
+    if (!sourceIndex.isValid())
+    {
+        return false;
+    }
 
-    // TODO: Implement.
-
-    return false;
+    QAbstractItemModel *model = const_cast<QAbstractItemModel*>(sourceIndex.model());
+    return model->setItemData(sourceIndex, roles);
 }
 
 /*!
