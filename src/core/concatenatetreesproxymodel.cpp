@@ -85,6 +85,8 @@ public:
     bool appendModel(const QSharedPointer<QAbstractItemModel>& model);
     bool removeModel(const QSharedPointer<QAbstractItemModel>& model);
 
+    QStringList getMimeTypes() const;
+
 public:
     QList<QSharedPointer<QAbstractItemModel> > models;
 
@@ -96,11 +98,19 @@ private:
                          ItemHandler handler, TreeNode *treeNode);
     void mergeTreeNodes(TreeNode* firstNode, TreeNode* secondNode);
 
+
 private:
     ConcatenateTreesProxyModel *q_ptr;
 
+    QMap<QString, QVector<QAbstractItemModel*>> mimeTypes;
+
     TreeNode rootNode;
 };
+
+QStringList ConcatenateTreesProxyModelPrivate::getMimeTypes() const
+{
+    return mimeTypes.keys();
+}
 
 TreeNode ConcatenateTreesProxyModelPrivate::findSourceModelForRowColumn(int row, int column) const
 {
@@ -234,6 +244,11 @@ bool ConcatenateTreesProxyModelPrivate::appendModel(const QSharedPointer<QAbstra
 
     models.append(model);
 
+    for (QString& mimeType : model->mimeTypes())
+    {
+        mimeTypes[mimeType].append(model.get());
+    }
+
     return true;
 }
 
@@ -266,6 +281,8 @@ bool ConcatenateTreesProxyModelPrivate::removeModel(const QSharedPointer<QAbstra
     if (models.removeOne(model))
     {
         removeChildren(model, &rootNode);
+
+        // TODO: Remove mime types.
 
         return true;
     }
@@ -548,9 +565,9 @@ QMimeData *ConcatenateTreesProxyModel::mimeData(const QModelIndexList &indexes) 
 */
 QStringList ConcatenateTreesProxyModel::mimeTypes() const
 {
-    // TODO: Implement.
+    Q_D(const ConcatenateTreesProxyModel);
 
-    return {};
+    return d->getMimeTypes();
 }
 
 /*!
