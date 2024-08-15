@@ -23,6 +23,51 @@
 namespace tests
 {
 
+void ConcatenateTreesProxyModelTest::initTestCase()
+{
+    // TODO: Implement.
+}
+
+void ConcatenateTreesProxyModelTest::testEmptyProxy()
+{
+    // TODO: Implement.
+}
+
+void ConcatenateTreesProxyModelTest::testNonEmptyProxy()
+{
+    // TODO: Implement.
+}
+
+void ConcatenateTreesProxyModelTest::dataChanged()
+{
+    // TODO: Implement.
+}
+
+void ConcatenateTreesProxyModelTest::rowManipulation()
+{
+    // TODO: Implement.
+}
+
+void ConcatenateTreesProxyModelTest::columnManipulation()
+{
+    // TODO: Implement.
+}
+
+void ConcatenateTreesProxyModelTest::layoutManipulation()
+{
+    // TODO: Implement.
+}
+
+void ConcatenateTreesProxyModelTest::setData()
+{
+    // TODO: Implement.
+}
+
+void ConcatenateTreesProxyModelTest::setItemData()
+{
+    // TODO: Implement.
+}
+
 }
 
 QTEST_MAIN(tests::ConcatenateTreesProxyModelTest)

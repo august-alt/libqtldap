@@ -28,6 +28,20 @@ namespace tests
     class ConcatenateTreesProxyModelTest : public QObject
     {
         Q_OBJECT
+    private slots:
+        void initTestCase();
+
+        void testEmptyProxy();
+        void testNonEmptyProxy();
+
+        void dataChanged();
+
+        void rowManipulation();
+        void columnManipulation();
+        void layoutManipulation();
+
+        void setData();
+        void setItemData();
     };
 }
 
