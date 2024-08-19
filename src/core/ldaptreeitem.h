@@ -31,7 +31,7 @@ class LDAPTreeItem
 {
 public:
     explicit LDAPTreeItem();
-    ~LDAPTreeItem();
+    virtual ~LDAPTreeItem();
 
     LDAPTreeItem *getParent() const;
     QVector<LDAPTreeItem *> getChildren() const;
