@@ -19,7 +19,7 @@ else()
     message(FATAL_ERROR "System not UNIX - not implemented yet")
 endif()
 
-set(BKRP_IN_BUILD_TREE TRUE)
+set(LIB_QT_LDAP_IN_BUILD_TREE TRUE)
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 

@@ -12,4 +12,4 @@ else()
   set(LIB_QT_LDAP_LIBRARY_DIR ${CMAKE_INSTALL_LIBDIR})
 endif()
 
-set(LIB_QT_LDAP_LIBRARY qtldap)
+set(LIB_QT_LDAP_CORE_LIBRARY qtldap-core)
