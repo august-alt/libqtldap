@@ -22,6 +22,12 @@
 #define QT_LDAP_TESTS_CONCATENATE_TREES_PROXY_MODEL_H
 
 #include <QtTest>
+#include <QStandardItemModel>
+
+namespace qtldap_core
+{
+    class ConcatenateTreesProxyModel;
+}
 
 namespace tests
 {
@@ -42,6 +48,9 @@ namespace tests
 
         void setData();
         void setItemData();
+
+    private:
+        QSharedPointer<QStandardItemModel> createTreeModel(uint32_t maxDepth);
     };
 }
 

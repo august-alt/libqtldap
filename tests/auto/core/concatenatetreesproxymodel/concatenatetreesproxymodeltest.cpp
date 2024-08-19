@@ -19,6 +19,9 @@
 ***********************************************************************************************************************/
 
 #include "concatenatetreesproxymodeltest.h"
+#include <libqtldap/concatenatetreesproxymodel.h>
+
+#include <QStandardItemModel>
 
 namespace tests
 {
@@ -30,16 +33,45 @@ void ConcatenateTreesProxyModelTest::initTestCase()
 
 void ConcatenateTreesProxyModelTest::testEmptyProxy()
 {
-    // TODO: Implement.
+    qtldap_core::ConcatenateTreesProxyModel proxyModel;
+    QAbstractItemModelTester tester(&proxyModel);
+
+    QCOMPARE(proxyModel.rowCount(), 0);
+    QCOMPARE(proxyModel.columnCount(), 0);
+
+    QSharedPointer<QStandardItemModel> itemModel = QSharedPointer<QStandardItemModel>(new QStandardItemModel());
+    proxyModel.addSourceModel(itemModel);
+
+    QCOMPARE(proxyModel.rowCount(), 0);
+    QCOMPARE(proxyModel.columnCount(), 1);
 }
 
 void ConcatenateTreesProxyModelTest::testNonEmptyProxy()
 {
-    // TODO: Implement.
+    qtldap_core::ConcatenateTreesProxyModel proxyModel;
+    QAbstractItemModelTester tester(&proxyModel);
+
+    QCOMPARE(proxyModel.rowCount(), 0);
+    QCOMPARE(proxyModel.columnCount(), 0);
+
+    QSharedPointer<QStandardItemModel> itemModel1 = createTreeModel(5);
+    proxyModel.addSourceModel(itemModel1);
+
+    QCOMPARE(proxyModel.rowCount(), 5);
+    QCOMPARE(proxyModel.columnCount(), 3);
+
+    QSharedPointer<QStandardItemModel> itemModel2 = createTreeModel(10);
+    proxyModel.addSourceModel(itemModel2);
+
+    QCOMPARE(proxyModel.rowCount(), 10);
+    QCOMPARE(proxyModel.columnCount(), 1);
 }
 
 void ConcatenateTreesProxyModelTest::dataChanged()
 {
+    qtldap_core::ConcatenateTreesProxyModel proxyModel;
+    QAbstractItemModelTester tester(&proxyModel);
+
     // TODO: Implement.
 }
 
@@ -66,6 +98,21 @@ void ConcatenateTreesProxyModelTest::setData()
 void ConcatenateTreesProxyModelTest::setItemData()
 {
     // TODO: Implement.
+}
+
+QSharedPointer<QStandardItemModel> ConcatenateTreesProxyModelTest::createTreeModel(uint32_t maxDepth)
+{
+    QSharedPointer<QStandardItemModel> itemModel = QSharedPointer<QStandardItemModel>(new QStandardItemModel());
+
+    for (uint32_t row = 0; row < maxDepth; ++maxDepth)
+    {
+        for (uint32_t column = 0; column < maxDepth; ++maxDepth)
+        {
+            itemModel->setItem(row, column, new QStandardItem(QStringLiteral("%1-%2").arg(row).arg(column)));
+        }
+    }
+
+    return itemModel;
 }
 
 }
